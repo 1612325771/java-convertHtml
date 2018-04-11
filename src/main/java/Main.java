@@ -10,6 +10,11 @@ import java.util.List;
 
 public class Main {
 
+    /**
+     * 运行主体，将源文件夹中的
+     * @param args
+     * @throws IOException
+     */
     public static void main(String[] args) throws IOException {
         Remark remark = new Remark();
         Utils utils = new Utils();
@@ -21,7 +26,8 @@ public class Main {
             filename = filename.substring(0,filename.length()-5)+".md";
             File file=new File(outPath+filename);
             OutputStream out=new FileOutputStream(file);
-            byte b[]=(utils.generateHeader(f)+markdown).getBytes();
+            String text  = utils.formatText(utils.generateHeader(f)+markdown);
+            byte b[]=(text).getBytes();
             out.write(b);
             out.close();
         }
@@ -29,6 +35,7 @@ public class Main {
 }
 
 class Utils {
+    //从目录中
     File[] readFile() {
         List<File> fileList = new ArrayList<File>();
         File file = new File("C:\\Users\\ygria\\Desktop\\html");
@@ -50,6 +57,16 @@ class Utils {
         return header;
     }
 
-   String for
+    //规则化文本
+   String formatText(String source){
+       source = source.replaceAll("[0-9]、","## ");
+       source = source.replaceAll("①|②|③|④|⑤|⑥|⑦|⑧|⑨|⑩","### ");
+       //删除多余的空行
+       source = source.replaceAll("((\r\n)|\n)[\\s\t ]*(\\1)+", "$1");
+       return source;
+
+
+   }
+
 
 }
